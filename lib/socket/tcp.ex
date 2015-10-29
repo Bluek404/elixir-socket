@@ -106,6 +106,11 @@ defmodule Socket.TCP do
 
     :gen_tcp.connect(String.to_char_list(address), port, arguments(options), options[:timeout] || :infinity)
   end
+  def connect(address, port, options) when address |> is_tuple do
+    options = Keyword.put_new(options, :mode, :passive)
+
+    :gen_tcp.connect(address, port, arguments(options), options[:timeout] || :infinity)
+  end
 
   @doc """
   Create a TCP socket connecting to the given host and port, raising in case of
